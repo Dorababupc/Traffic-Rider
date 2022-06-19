@@ -10,7 +10,11 @@ const keys={
     ArrowLeft:false,
     ArrowRight:false
 }
+let player={};
 function start(){
+    //remove the gameArea from class hide.
+    gameArea.classList.remove('hide');
+    startScreen.classList.add('hide');
     window.requestAnimationFrame(startGame);
 }
 function startGame(){
@@ -30,14 +34,14 @@ function keyDown(e){
     keys[e.key]=true;
     console.log(keys);
 }
-const box=document.querySelector('.box');
-function move(){
-    xpos=xpos+10;
-    box.style.transform=`translateX(${xpos}px)`;
-    let ww=document.body.clientWidth-100;
-    if(xpos<ww){
-        window.requestAnimationFrame(move);
-    }
-}
-let xpos=0;
-window.requestAnimationFrame(move);
+// const box=document.querySelector('.box');
+// function move(){
+//     xpos=xpos+10;
+//     box.style.transform=`translateX(${xpos}px)`;
+//     let ww=document.body.clientWidth-100;
+//     if(xpos<ww){
+//         window.requestAnimationFrame(move);
+//     }
+// }
+// let xpos=0;
+// window.requestAnimationFrame(move);
