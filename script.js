@@ -11,11 +11,20 @@ const keys={
     ArrowRight:false
 }
 let player={speed:5};
+let road;
 function start(){
     //remove the gameArea from class hide.
     player.start=true;
     gameArea.classList.remove('hide');
     startScreen.classList.add('hide');
+    
+    road=gameArea.getBoundingClientRect();
+    for(let x=0;x<5;++x){
+        let roadline=document.createElement('div');
+        roadline.setAttribute('class','roadline');
+        roadline.style.top=(x*150)+"px";
+        gameArea.appendChild(roadline);
+    }
     const car=document.createElement('div');
     car.setAttribute('class','car');
     
@@ -26,17 +35,18 @@ function start(){
 }
 function startGame(){
     let car=document.querySelector('.car');
+    
     if(player.start){
-        if(keys.ArrowUp){
+        if(keys.ArrowUp && player.y>0){
             player.y-=player.speed;
         }
-        if(keys.ArrowDown){
+        if(keys.ArrowDown && player.y<(road.bottom-70)){
             player.y+=player.speed;
         }
-        if(keys.ArrowLeft){
+        if(keys.ArrowLeft && player.x>0){
             player.x-=player.speed;
         }
-        if(keys.ArrowRight){
+        if(keys.ArrowRight && player.x<(road.width-50)){
             player.x+=player.speed;
         }
         car.style.top=player.y+"px";
