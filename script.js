@@ -10,20 +10,39 @@ const keys={
     ArrowLeft:false,
     ArrowRight:false
 }
-let player={};
+let player={speed:5};
 function start(){
     //remove the gameArea from class hide.
+    player.start=true;
     gameArea.classList.remove('hide');
     startScreen.classList.add('hide');
     const car=document.createElement('div');
     car.setAttribute('class','car');
     
     gameArea.appendChild(car);
+    player.x=car.offsetLeft;
+    player.y=car.offsetTop;
     window.requestAnimationFrame(startGame);
 }
 function startGame(){
-    console.log("Yes the game is started");
-    window.requestAnimationFrame(startGame);
+    let car=document.querySelector('.car');
+    if(player.start){
+        if(keys.ArrowUp){
+            player.y-=player.speed;
+        }
+        if(keys.ArrowDown){
+            player.y+=player.speed;
+        }
+        if(keys.ArrowLeft){
+            player.x-=player.speed;
+        }
+        if(keys.ArrowRight){
+            player.x+=player.speed;
+        }
+        car.style.top=player.y+"px";
+        car.style.left=player.x+"px";
+        window.requestAnimationFrame(startGame);
+    } 
 }
 
 function keyUp(e){
