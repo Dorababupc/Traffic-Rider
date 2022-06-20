@@ -15,6 +15,10 @@ function start(){
     //remove the gameArea from class hide.
     gameArea.classList.remove('hide');
     startScreen.classList.add('hide');
+    const car=document.createElement('div');
+    car.setAttribute('class','car');
+    car.innerText="Hii i am your car";
+    gameArea.appendChild(car);
     window.requestAnimationFrame(startGame);
 }
 function startGame(){
