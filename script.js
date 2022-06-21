@@ -53,7 +53,8 @@ function start(){
 function startGame(){
     let car=document.querySelector('.car');
     movelines();
-    movecars();
+    movecars(car);
+    
     if(player.start){
         if(keys.ArrowUp && player.y>0){
             player.y-=player.speed;
@@ -70,7 +71,9 @@ function startGame(){
         car.style.top=player.y+"px";
         car.style.left=player.x+"px";
         window.requestAnimationFrame(startGame);
-    } 
+    }
+   
+
 }
 
 function movelines(){
@@ -85,7 +88,7 @@ function movelines(){
     })
 }
 
-function movecars(){
+function movecars(cars){
     let enemycar=document.querySelectorAll('.enemycar');
     enemycar.forEach(function(item){
         if(item.y>(road.height)){
@@ -94,8 +97,20 @@ function movecars(){
         }
         item.y=item.y+player.speed+1;
         item.style.top=item.y+"px";
-        
+        if(isCollide(cars,item)){
+            console.log("boom");
+            player.start=false;
+        }
     })
+}
+
+function isCollide(car,item){
+    let carA=car.getBoundingClientRect();
+    let itemA=item.getBoundingClientRect();
+    if(Math.abs(carA.x-itemA.x)<=50 && Math.abs(carA.y-itemA.y)<=70){
+        return true;
+    }
+    return false;
 }
 
 function keyUp(e){
