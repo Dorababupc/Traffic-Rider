@@ -1,9 +1,6 @@
 const score=document.querySelector('.score');
 const startScreen=document.querySelector('.startScreen');
 const gameArea=document.querySelector('.gameArea');
-document.addEventListener('keyup',keyUp);
-document.addEventListener('keydown',keyDown);
-startScreen.addEventListener('click',start);
 const keys={
     ArrowUp:false,
     ArrowDown:false,
@@ -12,6 +9,12 @@ const keys={
 }
 let player={speed:5};
 let road;
+let dist;
+let car_dist;
+document.addEventListener('keyup',keyUp);
+document.addEventListener('keydown',keyDown);
+startScreen.addEventListener('click',start);
+
 function start(){
     //remove the gameArea from class hide.
     player.start=true;
@@ -19,23 +22,38 @@ function start(){
     startScreen.classList.add('hide');
     
     road=gameArea.getBoundingClientRect();
-    for(let x=0;x<5;++x){
+    console.log(road);
+    for(let x=-1;x<5;++x){
         let roadline=document.createElement('div');
         roadline.setAttribute('class','roadline');
         roadline.style.top=(x*150)+"px";
+        roadline.y=x*150;
         gameArea.appendChild(roadline);
     }
+    dist=road.height-(4*150+100);
     const car=document.createElement('div');
     car.setAttribute('class','car');
-    
     gameArea.appendChild(car);
     player.x=car.offsetLeft;
     player.y=car.offsetTop;
+
+    for(let x=-2;x<1;++x){
+        let enemycar=document.createElement('div');
+        enemycar.setAttribute('class','enemycar');
+        enemycar.style.top=(x*300)+"px";
+        enemycar.style.left=Math.floor(Math.random()*350)+"px";
+        enemycar.y=(x*300);
+        gameArea.appendChild(enemycar);
+    }
+    
     window.requestAnimationFrame(startGame);
 }
+
+
 function startGame(){
     let car=document.querySelector('.car');
-    
+    movelines();
+    movecars();
     if(player.start){
         if(keys.ArrowUp && player.y>0){
             player.y-=player.speed;
@@ -55,18 +73,46 @@ function startGame(){
     } 
 }
 
+function movelines(){
+    let roadline=document.querySelectorAll('.roadline');
+    roadline.forEach(function(item){
+        
+        if(item.y>road.height){
+            item.y=-300+100+dist;
+        }
+        item.y+=player.speed;
+        item.style.top=item.y+"px";
+    })
+}
+
+function movecars(){
+    let enemycar=document.querySelectorAll('.enemycar');
+    enemycar.forEach(function(item){
+        if(item.y>(road.height)){
+            item.y=-200;
+            item.style.left=Math.floor(Math.random()*350)+"px";
+        }
+        item.y=item.y+player.speed+1;
+        item.style.top=item.y+"px";
+        
+    })
+}
+
 function keyUp(e){
     e.preventDefault();
     // console.log(`${e.key} releasing`);
     keys[e.key]=false;
     console.log(keys);
 }
+
+
 function keyDown(e){
     e.preventDefault();
     // console.log(`${e.key} pressing`);
     keys[e.key]=true;
     console.log(keys);
 }
+
 // const box=document.querySelector('.box');
 // function move(){
 //     xpos=xpos+10;
